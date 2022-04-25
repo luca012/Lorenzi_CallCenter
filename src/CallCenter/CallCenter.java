@@ -104,7 +104,7 @@ public class CallCenter {
 		ObjectOutputStream oosClienti = null;
 		ObjectOutputStream oosTelefonate = null;
 		try {
-			oosOperatori = new ObjectOutputStream(new FileOutputStream("pperatori.bin"));
+			oosOperatori = new ObjectOutputStream(new FileOutputStream("operatori.bin"));
 			oosClienti = new ObjectOutputStream(new FileOutputStream("clienti.bin"));
 			oosTelefonate = new ObjectOutputStream(new FileOutputStream("telefonate.bin"));
 			oosOperatori.writeObject(operatori);
@@ -137,7 +137,7 @@ public class CallCenter {
 			oisOperatori.close();
 			oisClienti.close();
 			oisTelefonate.close();
-			System.out.println("\nDati importati dai file Operatori.bin, Clienti.bin e Telefonate.bin");
+			System.out.println("\nDati importati dai file operatori.bin, clienti.bin e telefonate.bin");
 		} catch (IOException e) {
 			System.out.println("\nFile binari da caricare non presenti");
 		} catch (ClassNotFoundException e) {
