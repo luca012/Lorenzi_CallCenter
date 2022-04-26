@@ -1,9 +1,10 @@
 package CallCenter;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Telefonata {
+public class Telefonata implements Serializable {
 	
 	private LocalDateTime dataOraInizio;
 	private LocalDateTime dataOraFine;

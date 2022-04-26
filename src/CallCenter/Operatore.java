@@ -1,6 +1,8 @@
 package CallCenter;
 
-public class Operatore {
+import java.io.Serializable;
+
+public class Operatore implements Serializable {
 	
 	private String codice;
 	private String cognome;

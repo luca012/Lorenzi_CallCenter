@@ -95,7 +95,7 @@ public class CallCenter {
 	}
 	
 	public void stampaChiamateOperatore(String codice) {
-		if(cercaOperatore(codice) != null && !telefonate.get(codice).isEmpty()) {
+		if(telefonate.get(codice) != null) {
 			System.out.println(telefonate.get(codice).toString());
 		} else {
 			System.out.println("Nessun operatore con questo codice o l'operatore non ha ricevuto telefonate");
