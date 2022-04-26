@@ -54,7 +54,8 @@ public class Test {
 				case 4:
 					String numero1 = input.inputString("Inserire il numero di telefono chiamante:");
 					if (c.chiamata(numero1)) {
-						while(input.inputInt("Premere 0 per terminare la chiamata: ")!=0) { continue; }
+						while(input.inputInt("\nPremere 0 per terminare la chiamata: ")!=0) { continue; }
+						System.out.println("** CHIAMATA TERMINATA **");
 					} else {
 						System.out.println("Nessun cliente con questo numero di telefono");
 					}

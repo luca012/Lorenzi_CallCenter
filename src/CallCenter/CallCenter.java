@@ -7,16 +7,18 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
+import java.util.Map.Entry;
+
 import java.util.ArrayList;
 
 public class CallCenter {
 	
 	private Map<String, Cliente> clienti;
 	private Map<String, Operatore> operatori;
-	private Map<String, Stack<Telefonata>> telefonate;
+	private Map<String, ArrayList<Telefonata>> telefonate;
 	
 	public CallCenter() {
 		this.clienti = new HashMap<>();
@@ -60,26 +62,31 @@ public class CallCenter {
 	    return (int) ((Math.random() * (max - min)) + min);
 	}
 	
-	// nella mappa telefonate la chiave codice è sbagliata
-	
 	public boolean chiamata(String numero) {
 		
 		if(cercaCliente(numero) != null) {
 			LocalDateTime dataOraInizio = LocalDateTime.now();
 			List<Operatore> list = new ArrayList<Operatore>(operatori.values());
 			Operatore o = list.get(random(0, list.size()));
-			System.out.println("\n** CHIAMATA DA: " + numero + " ***");
+			System.out.println("\n** CHIAMATA DA: " + numero + " **, servito dall'operatore " + o.getCodice());
 			System.out.println(clienti.get(numero).toString());
-			if (clienti.containsKey(numero) && !telefonate.containsKey(o.getCodice())) {
-				Stack<Telefonata> lista = new Stack<>();
+			if (clienti.get(numero).getUltimaTelefonata() == null && telefonate.get(o.getCodice()) == null) {
+				ArrayList<Telefonata> lista = new ArrayList<>();
 				telefonate.put(o.getCodice(), lista);
-			} else if (clienti.containsKey(numero) && telefonate.containsKey(o.getCodice())) {
-				System.out.println("-- Ultima telefonata --" + telefonate.get(o.getCodice()).peek().getDataOraInizio());
-				System.out.println("Data e ora di inizio" + telefonate.get(o.getCodice()).peek().getDataOraInizio());
-				System.out.println("Data e ora di fine" + telefonate.get(o.getCodice()).peek().getDataOraFine());
-				System.out.println(telefonate.get(o.getCodice()).peek().getO().toString());
+			} else if (clienti.get(numero).getUltimaTelefonata() != null && telefonate.get(o.getCodice()) == null) {
+				ArrayList<Telefonata> lista = new ArrayList<>();
+				telefonate.put(o.getCodice(), lista);
+				System.out.println("\n-- Ultima Telefonata --\nData e ora di inizio: " + clienti.get(numero).getUltimaTelefonata().getDataOraInizio());
+				System.out.println("Data e ora di fine: " + clienti.get(numero).getUltimaTelefonata().getDataOraFine());
+				System.out.println(clienti.get(numero).getUltimaTelefonata().getO().toString());
+			} else {
+				System.out.println("\n-- Ultima Telefonata --\nData e ora di inizio: " + clienti.get(numero).getUltimaTelefonata().getDataOraInizio());
+				System.out.println("Data e ora di fine: " + clienti.get(numero).getUltimaTelefonata().getDataOraFine());
+				System.out.println(clienti.get(numero).getUltimaTelefonata().getO().toString());
 			}
-			telefonate.get(o.getCodice()).push(new Telefonata(dataOraInizio, LocalDateTime.now(), clienti.get(numero), o));
+			ArrayList<Telefonata> app = telefonate.get(o.getCodice());
+			telefonate.get(o.getCodice()).add(new Telefonata(dataOraInizio, LocalDateTime.now(), clienti.get(numero), o));
+			clienti.get(numero).setUltimaTelefonata(app.get(app.size()-1));
 			return true;
 		}
 		else {
@@ -88,10 +95,10 @@ public class CallCenter {
 	}
 	
 	public void stampaChiamateOperatore(String codice) {
-		if(cercaOperatore(codice) != null) {
+		if(cercaOperatore(codice) != null && !telefonate.get(codice).isEmpty()) {
 			System.out.println(telefonate.get(codice).toString());
 		} else {
-			System.out.println("Nessun operatore con questo codice");
+			System.out.println("Nessun operatore con questo codice o l'operatore non ha ricevuto telefonate");
 		}
 	}
 	
@@ -131,9 +138,9 @@ public class CallCenter {
 			oisOperatori = new ObjectInputStream(new FileInputStream("operatori.bin"));
 			oisClienti = new ObjectInputStream(new FileInputStream("clienti.bin"));
 			oisTelefonate = new ObjectInputStream(new FileInputStream("telefonate.bin"));
-			this.operatori = (Map<String, Operatore>) oisOperatori.readObject();
-			this.clienti = (Map<String, Cliente>) oisClienti.readObject();
-			this.telefonate = ( Map<String, Stack<Telefonata>>) oisTelefonate.readObject();
+			operatori = (Map<String, Operatore>) oisOperatori.readObject();
+			clienti = (Map<String, Cliente>) oisClienti.readObject();
+			telefonate = (Map<String, ArrayList<Telefonata>>) oisTelefonate.readObject();
 			oisOperatori.close();
 			oisClienti.close();
 			oisTelefonate.close();

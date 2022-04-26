@@ -6,7 +6,8 @@ public class Cliente {
 	private String cognome;
 	private String nome;
 	private String numero;
-	
+	private Telefonata ultimaTelefonata = null;
+
 	public Cliente(String codice, String cognome, String nome, String numero) {
 		this.codice = codice;
 		this.cognome = cognome;
@@ -51,6 +52,14 @@ public class Cliente {
 
 	public void setNumero(String numero) {
 		this.numero = numero;
+	}
+	
+	public Telefonata getUltimaTelefonata() {
+		return ultimaTelefonata;
+	}
+
+	public void setUltimaTelefonata(Telefonata ultimaTelefonata) {
+		this.ultimaTelefonata = ultimaTelefonata;
 	}
 
 	@Override
