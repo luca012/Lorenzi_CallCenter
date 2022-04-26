@@ -7,13 +7,18 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
+/**
+ * 
+ * @author lucal
+ * @version 1.0 del 26/04/2022
+ * 
+ */
 public class CallCenter {
 	
 	private Map<String, Cliente> clienti;
@@ -65,28 +70,26 @@ public class CallCenter {
 	public boolean chiamata(String numero) {
 		
 		if(cercaCliente(numero) != null) {
+			Input input = new Input();
 			LocalDateTime dataOraInizio = LocalDateTime.now();
 			List<Operatore> list = new ArrayList<Operatore>(operatori.values());
 			Operatore o = list.get(random(0, list.size()));
 			System.out.println("\n** CHIAMATA DA: " + numero + " **, servito dall'operatore " + o.getCodice());
 			System.out.println(clienti.get(numero).toString());
-			if (clienti.get(numero).getUltimaTelefonata() == null && telefonate.get(o.getCodice()) == null) {
+			if (telefonate.get(o.getCodice()) == null) {
 				ArrayList<Telefonata> lista = new ArrayList<>();
 				telefonate.put(o.getCodice(), lista);
-			} else if (clienti.get(numero).getUltimaTelefonata() != null && telefonate.get(o.getCodice()) == null) {
-				ArrayList<Telefonata> lista = new ArrayList<>();
-				telefonate.put(o.getCodice(), lista);
-				System.out.println("\n-- Ultima Telefonata --\nData e ora di inizio: " + clienti.get(numero).getUltimaTelefonata().getDataOraInizio());
-				System.out.println("Data e ora di fine: " + clienti.get(numero).getUltimaTelefonata().getDataOraFine());
-				System.out.println(clienti.get(numero).getUltimaTelefonata().getO().toString());
-			} else {
+			} 
+			if (clienti.get(numero).getUltimaTelefonata() != null) {
 				System.out.println("\n-- Ultima Telefonata --\nData e ora di inizio: " + clienti.get(numero).getUltimaTelefonata().getDataOraInizio());
 				System.out.println("Data e ora di fine: " + clienti.get(numero).getUltimaTelefonata().getDataOraFine());
 				System.out.println(clienti.get(numero).getUltimaTelefonata().getO().toString());
 			}
-			ArrayList<Telefonata> app = telefonate.get(o.getCodice());
-			telefonate.get(o.getCodice()).add(new Telefonata(dataOraInizio, LocalDateTime.now(), clienti.get(numero), o));
-			clienti.get(numero).setUltimaTelefonata(app.get(app.size()-1));
+			while(input.inputInt("\nPremere 0 per terminare la chiamata: ")!=0) { continue; }
+			System.out.println("** CHIAMATA TERMINATA **");
+			Telefonata t = new Telefonata(dataOraInizio, LocalDateTime.now(), clienti.get(numero), o);
+			telefonate.get(o.getCodice()).add(t);
+			clienti.get(numero).setUltimaTelefonata(t);
 			return true;
 		}
 		else {
@@ -94,9 +97,17 @@ public class CallCenter {
 		}
 	}
 	
+	private void ordinaPerDataOraInizio(String codice) {
+		Collections.sort(telefonate.get(codice), Collections.reverseOrder());
+	}
+	
 	public void stampaChiamateOperatore(String codice) {
 		if(telefonate.get(codice) != null) {
-			System.out.println(telefonate.get(codice).toString());
+			ordinaPerDataOraInizio(codice);
+			System.out.println("\n** CHIAMATE RICEVUTE DALL'OPERATORE " + codice + " **\n");
+			for (Telefonata t : telefonate.get(codice)) {
+				System.out.println(t.toString());
+			}
 		} else {
 			System.out.println("Nessun operatore con questo codice o l'operatore non ha ricevuto telefonate");
 		}

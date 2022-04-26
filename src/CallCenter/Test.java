@@ -1,6 +1,6 @@
 package CallCenter;
 
-public class Test {
+public class Test  {
 	
 	public static void menu() {
 		System.out.println("\n *** Call Center *** ");
@@ -53,10 +53,7 @@ public class Test {
 					break;
 				case 4:
 					String numero1 = input.inputString("Inserire il numero di telefono chiamante:");
-					if (c.chiamata(numero1)) {
-						while(input.inputInt("\nPremere 0 per terminare la chiamata: ")!=0) { continue; }
-						System.out.println("** CHIAMATA TERMINATA **");
-					} else {
+					if (!c.chiamata(numero1)) {
 						System.out.println("Nessun cliente con questo numero di telefono");
 					}
 					break;

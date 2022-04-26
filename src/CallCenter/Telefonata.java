@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Telefonata implements Serializable {
+public class Telefonata implements Serializable,Comparable<Telefonata> {
 	
 	private LocalDateTime dataOraInizio;
 	private LocalDateTime dataOraFine;
@@ -50,7 +50,15 @@ public class Telefonata implements Serializable {
 	
 	@Override
 	public String toString() {
-		return "-- Telefonata --\nData e ora di inizio: " + toStringDateTime(this.dataOraInizio) + 
+		return "-- Telefonata --\nData e ora di inizio: " + toStringDateTime(dataOraInizio) + 
 				"\nData e ora di fine: " + toStringDateTime(dataOraFine) + "\nRicevuta dal cliente: " + c.getCodice() + "\n";
 	}
+
+	@Override
+	public int compareTo(Telefonata o) {
+		return getDataOraInizio().compareTo(o.getDataOraInizio());
+	}
+	
+	
+
 }
