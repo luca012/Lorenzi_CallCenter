@@ -25,6 +25,12 @@ public class Telefonata implements Serializable,Comparable<Telefonata> {
 		this.o = t.o;
 	}
 
+	private String toStringDateTime(LocalDateTime ldt) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy HH:mm:ss");
+		String formattedDateTime = ldt.format(formatter);
+		return formattedDateTime;
+	}
+
 	public String getDataOraInizio() {
 		return toStringDateTime(dataOraInizio);
 	}
@@ -32,7 +38,6 @@ public class Telefonata implements Serializable,Comparable<Telefonata> {
 	public String getDataOraFine() {
 		return toStringDateTime(dataOraFine);
 	}
-
 
 	public Cliente getC() {
 		return c;
@@ -42,12 +47,6 @@ public class Telefonata implements Serializable,Comparable<Telefonata> {
 		return o;
 	}
 
-	public String toStringDateTime(LocalDateTime ldt) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy HH:mm:ss");
-		String formattedDateTime = ldt.format(formatter);
-		return formattedDateTime;
-	}
-	
 	@Override
 	public String toString() {
 		return "-- Telefonata --\nData e ora di inizio: " + toStringDateTime(dataOraInizio) + 
@@ -55,10 +54,7 @@ public class Telefonata implements Serializable,Comparable<Telefonata> {
 	}
 
 	@Override
-	public int compareTo(Telefonata o) {
-		return getDataOraInizio().compareTo(o.getDataOraInizio());
+	public int compareTo(Telefonata t) {
+		return getDataOraInizio().compareTo(t.getDataOraInizio());
 	}
-	
-	
-
 }

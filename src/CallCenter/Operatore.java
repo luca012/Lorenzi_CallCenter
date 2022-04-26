@@ -46,7 +46,7 @@ public class Operatore implements Serializable {
 
 	@Override
 	public String toString() {
-		return "\n-- Ultimo Operatore --\nCodice: " + codice + "\nCognome: " + 
+		return "\n-- Operatore --\nCodice: " + codice + "\nCognome: " + 
 				cognome + "\nNome: " + nome;
 	}
 }

@@ -14,9 +14,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
+ * Classe per la gestione di un Call Center
  * 
- * @author lucal
- * @version 1.0 del 26/04/2022
+ * @author Luca Lorenzi
+ * @version 2.0 del 26/04/2022
  * 
  */
 public class CallCenter {
@@ -25,19 +26,53 @@ public class CallCenter {
 	private Map<String, Operatore> operatori;
 	private Map<String, ArrayList<Telefonata>> telefonate;
 	
+	/**
+	 * Costruttore
+	 * 
+	 * Inizializza le strutture dati {@code HashMap} <b>clienti</b>, {@code HashMap} <b>operatori</b>, {@code HashMap} <b>telefonate</b>
+	 */
 	public CallCenter() {
 		this.clienti = new HashMap<>();
 		this.operatori = new HashMap<>();
 		this.telefonate = new HashMap<>();
 	}
 	
+	/**
+	 * METODO PRIVATO, non compare nella java doc
+	 * 
+	 * Cerca un cliente nella {@code HashMap} <b>clienti</b>
+	 * 
+	 * @param numero	numero di telefono del cliente da cercare 
+	 * @return			l'oggetto {@link Cliente}. Se non esiste ritorna null
+	 */
+	
 	private Cliente cercaCliente(String numero) {
 		return clienti.get(numero);
 	}
 	
+	/**
+	 * METODO PRIVATO, non compare nella java doc
+	 * 
+	 * Cerca un operatore nella {@code HashMap} <b>operatori</b>
+	 * 
+	 * @param codice	codice dell'operatore da cercare 
+	 * @return			l'oggetto {@link Operatore}. Se non esiste ritorna null
+	 */
+	
 	private Operatore cercaOperatore(String codice) {
 		return operatori.get(codice);
 	}
+	
+	/**
+	 * 
+	 * Aggiunge un cliente alla {@code HashMap} <b>clienti</b>
+	 * 
+	 * @param codice	codice del cliente da aggiungere
+	 * @param cognome 	cognome del cliente da aggiungere
+	 * @param nome		nome del cliente da aggiungere
+	 * @param numero	numero di telefono del cliente da aggiungere
+	 * @return			true se il cliente viene aggiunto, altrimenti false
+	 */
 	
 	public boolean inserisciCliente(String codice, String cognome, String nome, String numero) {
 		if (cercaCliente(numero) == null) {
@@ -47,6 +82,16 @@ public class CallCenter {
 		return false;
 	}
 	
+	/**
+	 * 
+	 * Aggiunge un operatore alla {@code HashMap} <b>operatori</b>
+	 * 
+	 * @param codice	codice dell'operatore da aggiungere
+	 * @param cognome 	cognome dell'operatore da aggiungere
+	 * @param nome		nome dell'operatore da aggiungere
+	 * @return			true se l'operatore viene aggiunto, altrimenti false
+	 */
+	
 	public boolean inserisciOperatore(String codice, String cognome, String nome) {
 		if (cercaOperatore(codice) == null) {
 			operatori.put(codice, new Operatore(codice, cognome, nome));
@@ -55,6 +100,11 @@ public class CallCenter {
 		return false;
 	}
 	
+	/**
+	 * Elimina un operatore dalla {@code HashMap} <b>operatori</b>
+	 * @param codice	codice dell'operatore da eliminare
+	 * @return			true se l'operatore viene eliminato, altrimenti false
+	 */
 	public boolean eliminaOperatore(String codice) {
 		if (cercaOperatore(codice) != null) {
 			operatori.remove(codice);
@@ -63,10 +113,25 @@ public class CallCenter {
 		return false;
 	}
 	
-	public int random(int min, int max) {
+	/**
+	 * METODO PRIVATO, non compare nella java doc
+	 * 
+	 * Genera numeri interi casuali in un determinato intervallo (estremi inclusi)
+	 * 
+	 * @param min	valore minimo dell'intervallo
+	 * @param max	valore massimo del dell'intervallo
+	 * @return		il numero intero generato
+	 */
+	private int random(int min, int max) {
 	    return (int) ((Math.random() * (max - min)) + min);
 	}
 	
+	/**
+	 * Simula una chiamata al Call Center da parte di un cliente
+	 * 
+	 * @param numero	numero di telefono del cliente chiamante
+	 * @return			true se il cliente è esistente, false altrimenti
+	 */
 	public boolean chiamata(String numero) {
 		
 		if(cercaCliente(numero) != null) {
@@ -83,7 +148,7 @@ public class CallCenter {
 			if (clienti.get(numero).getUltimaTelefonata() != null) {
 				System.out.println("\n-- Ultima Telefonata --\nData e ora di inizio: " + clienti.get(numero).getUltimaTelefonata().getDataOraInizio());
 				System.out.println("Data e ora di fine: " + clienti.get(numero).getUltimaTelefonata().getDataOraFine());
-				System.out.println(clienti.get(numero).getUltimaTelefonata().getO().toString());
+				System.out.println("\nUltima di questo numero servita da:" + clienti.get(numero).getUltimaTelefonata().getO().toString());
 			}
 			while(input.inputInt("\nPremere 0 per terminare la chiamata: ")!=0) { continue; }
 			System.out.println("** CHIAMATA TERMINATA **");
@@ -97,9 +162,20 @@ public class CallCenter {
 		}
 	}
 	
+	/**
+	 * Ordina una lista di chiamate in ordine decrescente in base alla data e ora di inizio
+	 * 
+	 * @param codice	codice dell'operatore per risalire alla lista delle chiamate di quell'operatore
+	 */
 	private void ordinaPerDataOraInizio(String codice) {
 		Collections.sort(telefonate.get(codice), Collections.reverseOrder());
 	}
+	
+	/**
+	 * Stampa le chiamate ricevute da un operatore
+	 * 
+	 * @param codice	codice dell'operatore per risalire alla lista delle chiamate di quell'operatore
+	 */
 	
 	public void stampaChiamateOperatore(String codice) {
 		if(telefonate.get(codice) != null) {

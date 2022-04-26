@@ -44,7 +44,7 @@ public class Test  {
 					String codice2 = input.inputString("\nInserire il codice del cliente:");
 					String nome1 = input.inputString("Inserire il nome:");
 					String cognome1 = input.inputString("Inserire il cognome:");
-					String numero = input.inputString("Inserire il numero di telefono:");
+					String numero = input.inputPhoneNumber();
 					if (c.inserisciCliente(codice2, cognome1, nome1, numero)) {
 						System.out.println("Nuovo cliente aggiunto correttamente");
 					} else {
@@ -52,7 +52,7 @@ public class Test  {
 					}
 					break;
 				case 4:
-					String numero1 = input.inputString("Inserire il numero di telefono chiamante:");
+					String numero1 = input.inputPhoneNumber();
 					if (!c.chiamata(numero1)) {
 						System.out.println("Nessun cliente con questo numero di telefono");
 					}

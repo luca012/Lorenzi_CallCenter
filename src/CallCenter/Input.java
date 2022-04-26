@@ -200,7 +200,7 @@ public class Input {
 	public String inputPhoneNumber() {
 		String cell;
 		do {
-			cell = this.inputString("Numero : ");
+			cell = this.inputString("Inserire il numero di telefono: ");
 			if (!cell.matches("\\d{10}")) {
 				System.out.println("Numero inserito non valido, riprovare!");
 			}
