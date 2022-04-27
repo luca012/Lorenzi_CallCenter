@@ -148,7 +148,7 @@ public class CallCenter {
 			if (clienti.get(numero).getUltimaTelefonata() != null) {
 				System.out.println("\n-- Ultima Telefonata --\nData e ora di inizio: " + clienti.get(numero).getUltimaTelefonata().getDataOraInizio());
 				System.out.println("Data e ora di fine: " + clienti.get(numero).getUltimaTelefonata().getDataOraFine());
-				System.out.println("\nUltima di questo numero servita da:" + clienti.get(numero).getUltimaTelefonata().getO().toString());
+				System.out.println("\nUltima chiamata di questo numero servita da:" + clienti.get(numero).getUltimaTelefonata().getO().toString());
 			}
 			while(input.inputInt("\nPremere 0 per terminare la chiamata: ")!=0) { continue; }
 			System.out.println("** CHIAMATA TERMINATA **");
